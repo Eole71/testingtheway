@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingdom CSGO Gambling</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e28;
+            color: #f3f3f4;
+        }
+
+        h1, h2 {
+            color: #ffcc29;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.collapsed + .content {
+            margin-left: 60px;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: #2e2e3d;
+            color: #fff;
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            transition: width 0.3s;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-content {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .sidebar-menu {
+            flex-grow: 1;
+        }
+
+        .menu-item {
+            text-decoration: none;
+            color: #ffcc29;
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .menu-item:hover {
+            background: #383850;
+        }
+
+        .toggle-sidebar {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            padding: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .sidebar.collapsed .logo h1 {
+            display: none;
+        }
+
+        .sidebar.collapsed .menu-item {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .sidebar.collapsed .sidebar-content {
+            padding: 10px;
+        }
+
+        /* Profile Section Styles */
+        .profile {
+            background: #2e2e3d;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .profile .user-avatar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        .profile .progress-bar {
+            background: #383850;
+            width: 200px;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .profile .progress {
+            background: #ffcc29;
+            height: 100%;
+            width: 70%; /* Example progress */
+        }
+
+        .profile .user-level {
+            text-align: center;
+        }
+
+        /* Games Page Styles */
+        .games-page {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .game-card {
+            background: #2e2e3d;
+            border-radius: 8px;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s, background 0.3s;
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            background: #383850;
+        }
+
+        .game-card img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        /* Leaderboard Styles */
+        .leaderboard {
+            margin-top: 20px;
+        }
+
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .player-card {
+            background: #2e2e3d;
+            border-radius: 8px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .player-card:hover {
+            background: #383850;
+        }
+
+        .player-rank {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rank-icon {
+            width: 30px;
+            height: 30px;
+        }
+
+        .player-info {
+            text-align: right;
+            color: #f3f3f4;
+        }
+
+        .player-name {
+            display: block;
+            font-weight: bold;
+            color: #ffcc29;
+            font-size: 18px;
+        }
+
+        .player-wager {
+            font-size: 14px;
+            color: #b0b0c3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <button class="toggle-sidebar" id="toggleSidebar">
+            <span class="toggle-icon">☰</span>
+        </button>
+        <div class="sidebar-content">
+            <div class="logo">
+                <img src="https://pixabay.com/get/g8eaa6c9ef5fbb70e4d8c6e97321e63b1994df49b94b2678d89cb1b2ef314019eb43d82728760ddbe7f98ad2e9a20c7bda9cc1543bc7e01bc01f4dd71b9ff994e_1280.png" alt="Kingdom Logo" class="logo-img">
+                <h1>Kingdom</h1>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="#profile" class="menu-item">Profile</a>
+                <a href="#games-page" class="menu-item">Games</a>
+                <a href="#leaderboard" class="menu-item">Leaderboard</a>
+                <a href="#rewards" class="menu-item">Rewards</a>
+                <a href="#account" class="menu-item">Account</a>
+                <a href="#support" class="menu-item">Support</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Profile Section -->
+        <section id="profile" class="profile">
+            <div class="user-avatar">
+                <img src="https://pixabay.com/get/gb9de244a97b5f4b2cd007e07d0c9a8a8b281c71c2fa5e9e3f0e30e3c8503b1b21cfb2afc34c3b14b0bb97f9e6f0c2e68_1280.png" alt="User Avatar">
+                <div>
+                    <h2>User123</h2>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <span>Level 15</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Games Page -->
+        <section id="games-page" class="games-page">
+            <div class="game-card">
+                <img src="https://pixabay.com/get/g5f6e3fae4b37bf9828db02b527354cde0cdecd4f7284c536c01ea5bf6e432a3cb6b2cf6c6f3b9a3c7e91326abf37856c_1280.png" alt="Jackpot">
+                <h2>Jackpot</h2>
+            </div>
+            <div class="game-card">
+                <img src="https://pixabay.com/get/g3b0c9a8b84d908b0d4d2d0e7079e0190f0baf4bc39544ac3e5bb5ad7f2b96782_1280.png" alt="Case Battles">
+                <h2>Case Battles</h2>
+            </div>
+            <div class="game-card">
+                <img src="https://pixabay.com/get/g4e287120c5d1d9a3a9f0937c02f76a78_1280.png" alt="Coinflip">
+                <h2>Coinflip</h2>
+            </div>
+            <div class="game-card">
+                <img src="https://pixabay.com/get/gcb21aa24cd540d2ffcd493d2d717f0dc_1280.png" alt="Upgrade">
+                <h2>Upgrade</h2>
+            </div>
+            <div class="game-card">
+                <img src="https://pixabay.com/get/g5d3a69e03e234856b1af50e9819c3b88_1280.png" alt="Keno">
+                <h2>Keno</h2>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="leaderboard" class="leaderboard">
+            <h1>Top Players - October</h1>
+            <div class="leaderboard-list">
+                <div class="player-card">
+                    <div class="player-rank">
+                        <img src="https://pixabay.com/get/g0b95f4f3a3e21cf29a9ff3eaa8a7e62c1e197d83955bdc85efcf862aadfdcb69_1280.png" alt="Crown Icon" class="rank-icon">
+                        <span class="player-name">User123</span>
+                    </div>
+                    <div class="player-info">
+                        <span class="player-wager">$50,000</span>
+                    </div>
+                </div>
+                <!-- Add more player cards as needed, up to 20 players -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.getElementById("toggleSidebar").addEventListener("click", function() {
+            const sidebar = document.querySelector(".sidebar");
+            sidebar.classList.toggle("collapsed");
+        });
+    </script>
+</body>
+</html>
